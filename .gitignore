@@ -2,3 +2,5 @@ node_modules/
 
 # Ignorar archivos de logs
 *.log
+
+token.txt
