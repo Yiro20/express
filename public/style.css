@@ -1,0 +1,31 @@
+.product-image {
+  height: 200px;
+  object-fit: contain;
+  background-color: #f8fafc;
+  border-radius: 8px;
+}
+.product-detail-image {
+  height: 400px;
+  object-fit: contain;
+  background-color: #f8fafc;
+  border-radius: 12px;
+}
+.thumbnail {
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.active-thumbnail {
+  border: 3px solid #3b82f6;
+}
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+#main-content {
+  min-height: calc(100vh - 128px);
+}

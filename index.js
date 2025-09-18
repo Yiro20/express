@@ -1,4 +1,3 @@
-// index.js
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -19,6 +18,7 @@ const imagenesRoutes = require("./routes/imagenes");
 app.use("/categorias", categoriasRoutes);
 app.use("/productos", productosRoutes);
 app.use("/imagenes", imagenesRoutes);
+
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

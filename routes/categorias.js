@@ -10,6 +10,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 // Crear nueva categoría
 router.post("/", async (req, res) => {
   const { nombre } = req.body;
@@ -23,6 +24,7 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 // Actualizar categoría
 router.put("/:id", async (req, res) => {
   const { id } = req.params;

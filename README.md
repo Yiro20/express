@@ -13,7 +13,7 @@ Este es un proyecto básico de CRUD utilizando Express.js.
 1. Clona el repositorio:
 
    ```bash
-   git clone https://github.com/Yiro20/express-mysql-crud.git
+   git clone https://github.com/Yiro20/express.git
    cd express-mysql-crud
    ```
 
