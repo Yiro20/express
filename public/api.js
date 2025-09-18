@@ -1,5 +1,5 @@
 // === CONFIG ===
-const API_BASE_URL = "http://localhost:3000"; // ajusta si es necesario
+const API_BASE_URL = "https://express-s5nl.onrender.com"; // ajusta si es necesario
 
 // === NAVEGACIÓN DE PÁGINAS/FORMULARIOS ===
 function showPage(id) {
