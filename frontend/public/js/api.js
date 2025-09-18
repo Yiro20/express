@@ -12,20 +12,6 @@ function showPage(id) {
   }
 }
 
-function showCreateForm(type) {
-  const pages = document.querySelectorAll(".page");
-  pages.forEach((p) => p.classList.remove("active"));
-
-  if (type === "product") {
-    // Mostrar formulario de producto
-    document.getElementById("product-form").classList.add("active");
-    loadCategoriesIntoForm();
-  } else if (type === "category") {
-    // Mostrar formulario de categoría
-    document.getElementById("category-form").classList.add("active");
-  }
-}
-
 // === CATEGORÍAS ===
 async function loadCategories() {
   try {
@@ -52,19 +38,6 @@ async function loadCategories() {
     });
   } catch (e) {
     console.error("Error cargando categorías", e);
-  }
-}
-
-async function loadCategoriesIntoForm() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/categorias`);
-    const categories = await res.json();
-    const select = document.getElementById("product-category");
-    select.innerHTML = categories
-      .map((c) => `<option value="${c.id}">${c.nombre}</option>`)
-      .join("");
-  } catch (e) {
-    console.error("Error cargando categorías en form", e);
   }
 }
 
@@ -168,93 +141,12 @@ async function showProductDetail(productId) {
   }
 }
 
-// === FORM: CATEGORÍA ===
-async function registerCategory(event) {
-  event.preventDefault();
-  const nombre = document.getElementById("category-name").value.trim();
-  if (!nombre) return;
-
-  const res = await fetch(`${API_BASE_URL}/api/categorias`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nombre }),
-  });
-
-  if (res.ok) {
-    alert("Categoría registrada con éxito");
-    document.getElementById("category-name").value = "";
-    loadCategories();
-    showPage("products-page");
-  } else {
-    alert("Error al registrar la categoría");
-  }
-}
-
-// === FORM: PRODUCTO (usa URLs de imágenes, separadas por coma) ===
-async function registerProduct(event) {
-  event.preventDefault();
-  const nombre = document.getElementById("product-name").value.trim();
-  const precio = document.getElementById("product-price").value;
-  const descripcion = document
-    .getElementById("product-description")
-    .value.trim();
-  const categoria_id = document.getElementById("product-category").value;
-  const rawImgs = document.getElementById("product-images").value.trim();
-  const imagenes = rawImgs
-    ? rawImgs
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean)
-    : [];
-
-  const res = await fetch(`${API_BASE_URL}/api/productos`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nombre,
-      precio,
-      categoria_id,
-      descripcion,
-      imagenes,
-    }),
-  });
-
-  if (res.ok) {
-    alert("Producto registrado con éxito");
-    event.target.reset();
-    showPage("products-page");
-    loadProducts();
-  } else {
-    alert("Error al registrar el producto");
-  }
-}
-
-// === FORM: AGREGAR IMAGEN A PRODUCTO ===
-async function registerImage(event) {
-  event.preventDefault();
-  const producto_id = Number(document.getElementById("image-product-id").value);
-  const url = document.getElementById("image-url").value.trim();
-
-  if (!producto_id || !url) return;
-
-  const res = await fetch(`${API_BASE_URL}/api/imagenes`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url, producto_id }),
-  });
-
-  if (res.ok) {
-    alert("Imagen agregada con éxito");
-    event.target.reset();
-    showPage("products-page");
-    loadProducts();
-  } else {
-    alert("Error al agregar la imagen");
-  }
-}
-
 // === INICIO ===
 document.addEventListener("DOMContentLoaded", () => {
   loadCategories();
   loadProducts(); // al ingresar, mostrar todos los productos
+
+  document
+    .getElementById("back-to-products")
+    .addEventListener("click", () => showPage("products-page"));
 });

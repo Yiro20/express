@@ -31,9 +31,9 @@ CREATE TABLE usuarios (
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     rol ENUM('admin', 'cliente') DEFAULT 'cliente',
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insertar un usuario admin por defecto (contraseña: admin123)
 INSERT INTO usuarios (nombre, email, password, rol) 
-VALUES ('Administrador', 'admin@tienda.com', '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+VALUES ('Administrador', 'admin@tienda.com', '$2b$10$QLp8Dt.Yf5LyK3XOwwFb0.sffIIujYVjPJKIXZ41Bk8ZRiO5rVFRq', 'admin');
