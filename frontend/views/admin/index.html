@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Administración - Tienda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <h1 class="text-2xl font-bold text-blue-600">
+          Panel de Administración
+        </h1>
+        <div class="flex items-center space-x-4">
+          <span id="userName" class="text-gray-700"></span>
+          <button
+            onclick="logout()"
+            class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition"
+          >
+            <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+          </button>
+          <button
+            onclick="window.location.href='/'"
+            class="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 transition"
+          >
+            <i class="fas fa-store mr-2"></i>Ir a Tienda
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white">
+      <div class="container mx-auto px-4">
+        <div class="flex space-x-8 py-3">
+          <button
+            onclick="showSection('dashboard')"
+            class="px-4 py-2 hover:bg-blue-700 rounded transition nav-link active"
+          >
+            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+          </button>
+          <button
+            onclick="showSection('categorias')"
+            class="px-4 py-2 hover:bg-blue-700 rounded transition nav-link"
+          >
+            <i class="fas fa-tags mr-2"></i>Categorías
+          </button>
+          <button
+            onclick="showSection('productos')"
+            class="px-4 py-2 hover:bg-blue-700 rounded transition nav-link"
+          >
+            <i class="fas fa-box mr-2"></i>Productos
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Dashboard Section -->
+      <div id="dashboard-section" class="section active">
+        <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+              <div class="p-3 bg-blue-100 rounded-full">
+                <i class="fas fa-box text-blue-600 text-2xl"></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-2xl font-bold" id="totalProducts">0</h3>
+                <p class="text-gray-600">Productos Totales</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+              <div class="p-3 bg-green-100 rounded-full">
+                <i class="fas fa-tags text-green-600 text-2xl"></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-2xl font-bold" id="totalCategories">0</h3>
+                <p class="text-gray-600">Categorías</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+              <div class="p-3 bg-purple-100 rounded-full">
+                <i class="fas fa-shopping-cart text-purple-600 text-2xl"></i>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-2xl font-bold" id="totalOrders">0</h3>
+                <p class="text-gray-600">Pedidos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categorías Section -->
+      <div id="categorias-section" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold">Gestión de Categorías</h2>
+          <button
+            onclick="openCategoryModal()"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            <i class="fas fa-plus mr-2"></i>Nueva Categoría
+          </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  ID
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Nombre
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody id="categories-table-body" class="divide-y divide-gray-200">
+              <!-- Las categorías se cargarán aquí -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Productos Section -->
+      <div id="productos-section" class="section">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold">Gestión de Productos</h2>
+          <button
+            onclick="openProductModal()"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            <i class="fas fa-plus mr-2"></i>Nuevo Producto
+          </button>
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Imagen
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Nombre
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Precio
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Categoría
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody id="products-table-body" class="divide-y divide-gray-200">
+              <!-- Los productos se cargarán aquí -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Modal Categoría -->
+    <div
+      id="categoryModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-xl font-bold mb-4" id="categoryModalTitle">
+          Nueva Categoría
+        </h3>
+        <form id="categoryForm">
+          <input type="hidden" id="categoryId" />
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2"
+              >Nombre de la categoría</label
+            >
+            <input
+              type="text"
+              id="categoryName"
+              class="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button
+              type="button"
+              onclick="closeCategoryModal()"
+              class="px-4 py-2 bg-gray-300 rounded"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal de Confirmación para Eliminar -->
+    <div
+      id="deleteConfirmModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-xl font-bold mb-4 text-red-600">
+          <i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Eliminación
+        </h3>
+        <p id="deleteConfirmMessage" class="text-gray-700 mb-6">
+          ¿Estás seguro de que quieres eliminar esta categoría?
+        </p>
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            onclick="closeDeleteConfirmModal()"
+            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            id="confirmDeleteBtn"
+            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            <i class="fas fa-trash mr-2"></i>Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalles del Producto -->
+    <div
+      id="productDetailModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-white rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto"
+      >
+        <h3 class="text-xl font-bold mb-4">Detalles del Producto</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-gray-700 font-bold mb-2">Nombre</label>
+            <p id="product-detail-name" class="text-gray-800"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-bold mb-2">Precio</label>
+            <p id="product-detail-price" class="text-gray-800"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-bold mb-2">Categoría</label>
+            <p id="product-detail-category" class="text-gray-800"></p>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Descripción</label>
+          <p id="product-detail-description" class="text-gray-800"></p>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-bold mb-2">Imágenes</label>
+          <div id="product-detail-images" class="space-y-2"></div>
+        </div>
+        <div class="flex justify-end">
+          <button
+            id="closeProductDetailModal"
+            class="px-4 py-2 bg-gray-300 rounded"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para Gestión de Imágenes (para edición) -->
+    <div
+      id="imageManagementModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-6 w-full max-w-2xl">
+        <h3 class="text-xl font-bold mb-4">Gestión de Imágenes</h3>
+
+        <div
+          id="product-images-container"
+          class="mb-4 max-h-60 overflow-y-auto"
+        >
+          <!-- Las imágenes se cargarán aquí -->
+        </div>
+
+        <form id="add-image-form" class="mb-4">
+          <label class="block text-gray-700 mb-2"
+            >Agregar nueva imagen (URL)</label
+          >
+          <div class="flex">
+            <input
+              type="url"
+              id="new-image-url"
+              class="flex-1 p-2 border rounded-l"
+              placeholder="https://ejemplo.com/imagen.jpg"
+            />
+            <button
+              type="submit"
+              id="add-image-btn"
+              class="px-4 py-2 bg-blue-600 text-white rounded-r"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </form>
+
+        <div class="flex justify-end">
+          <button
+            onclick="closeImageManagementModal()"
+            class="px-4 py-2 bg-gray-300 rounded"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Producto -->
+    <div
+      id="productModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-white rounded-lg p-6 w-full max-w-2xl max-h-screen overflow-y-auto"
+      >
+        <h3 class="text-xl font-bold mb-4" id="productModalTitle">
+          Nuevo Producto
+        </h3>
+        <form id="productForm">
+          <input type="hidden" id="productId" />
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-gray-700 mb-2"
+                >Nombre del producto</label
+              >
+              <input
+                type="text"
+                id="productName"
+                class="w-full p-2 border rounded"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-gray-700 mb-2">Precio</label>
+              <input
+                type="number"
+                id="productPrice"
+                step="0.01"
+                class="w-full p-2 border rounded"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">Descripción</label>
+            <textarea
+              id="productDescription"
+              class="w-full p-2 border rounded"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">Categoría</label>
+            <select
+              id="productCategory"
+              class="w-full p-2 border rounded"
+              required
+            >
+              <option value="">Seleccionar categoría</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2"
+              >Imágenes (URLs separadas por coma)</label
+            >
+            <textarea
+              id="productImages"
+              class="w-full p-2 border rounded"
+              rows="3"
+              placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.jpg"
+            ></textarea>
+          </div>
+          <div class="flex justify-end space-x-3">
+            <button
+              type="button"
+              onclick="closeProductModal()"
+              class="px-4 py-2 bg-gray-300 rounded"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div
+      id="loading"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white p-6 rounded-lg">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"
+        ></div>
+        <p class="mt-3 text-center">Cargando...</p>
+      </div>
+    </div>
+
+    <script src="/js/admin.js" type="module"></script>
+  </body>
+</html>

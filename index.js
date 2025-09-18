@@ -1,23 +1,47 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path"); // Importar path
+const path = require("path");
+
 const app = express();
 const PORT = 3000;
+
 // Middlewares
-// --Permitir CORS
 app.use(cors());
-// --Parsear JSON en requests
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public"))); // Servir archivos estáticos
+
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, "frontend/public")));
+app.use(express.static(path.join(__dirname, "frontend/views")));
+
 // Importar rutas
-const categoriasRoutes = require("./routes/categorias");
-const productosRoutes = require("./routes/productos");
-const imagenesRoutes = require("./routes/imagenes");
-// Registrar rutas
-app.use("/categorias", categoriasRoutes);
-app.use("/productos", productosRoutes);
-app.use("/imagenes", imagenesRoutes);
+const authRoutes = require("./backend/routes/auth.route");
+const categoriasRoutes = require("./backend/routes/category.route");
+const productosRoutes = require("./backend/routes/product.route");
+const imagenesRoutes = require("./backend/routes/image.route");
+
+// Rutas API
+app.use("/api/auth", authRoutes);
+app.use("/api/categorias", categoriasRoutes);
+app.use("/api/productos", productosRoutes);
+app.use("/api/imagenes", imagenesRoutes);
+
+// Rutas frontend
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/views/store/index.html"));
+});
+
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/views/admin/index.html"));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/views/auth/login.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/views/auth/register.html"));
+});
 
 // Iniciar servidor
 app.listen(PORT, () => {

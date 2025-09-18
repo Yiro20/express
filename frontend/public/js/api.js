@@ -1,5 +1,4 @@
-// === CONFIG ===
-const API_BASE_URL = "https://express-s5nl.onrender.com"; // ajusta si es necesario
+import { API_BASE_URL } from "../config.js";
 
 // === NAVEGACIÓN DE PÁGINAS/FORMULARIOS ===
 function showPage(id) {
@@ -30,7 +29,7 @@ function showCreateForm(type) {
 // === CATEGORÍAS ===
 async function loadCategories() {
   try {
-    const res = await fetch(`${API_BASE_URL}/categorias`);
+    const res = await fetch(`${API_BASE_URL}/api/categorias`);
     const categories = await res.json();
     const nav = document.getElementById("categories-nav");
     nav.innerHTML = "";
@@ -58,7 +57,7 @@ async function loadCategories() {
 
 async function loadCategoriesIntoForm() {
   try {
-    const res = await fetch(`${API_BASE_URL}/categorias`);
+    const res = await fetch(`${API_BASE_URL}/api/categorias`);
     const categories = await res.json();
     const select = document.getElementById("product-category");
     select.innerHTML = categories
@@ -75,7 +74,7 @@ async function loadProducts(
   title = "Todos nuestros productos"
 ) {
   try {
-    const res = await fetch(`${API_BASE_URL}/productos`);
+    const res = await fetch(`${API_BASE_URL}/api/productos`);
     let products = await res.json();
 
     // filtro por nombre de categoría (frontend) si se seleccionó alguna
@@ -121,7 +120,7 @@ async function loadProducts(
 
 async function showProductDetail(productId) {
   try {
-    const res = await fetch(`${API_BASE_URL}/productos/${productId}`);
+    const res = await fetch(`${API_BASE_URL}/api/productos/${productId}`);
     const product = await res.json();
 
     showPage("product-detail-page");
@@ -175,7 +174,7 @@ async function registerCategory(event) {
   const nombre = document.getElementById("category-name").value.trim();
   if (!nombre) return;
 
-  const res = await fetch(`${API_BASE_URL}/categorias`, {
+  const res = await fetch(`${API_BASE_URL}/api/categorias`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ nombre }),
@@ -208,7 +207,7 @@ async function registerProduct(event) {
         .filter(Boolean)
     : [];
 
-  const res = await fetch(`${API_BASE_URL}/productos`, {
+  const res = await fetch(`${API_BASE_URL}/api/productos`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -238,7 +237,7 @@ async function registerImage(event) {
 
   if (!producto_id || !url) return;
 
-  const res = await fetch(`${API_BASE_URL}/imagenes`, {
+  const res = await fetch(`${API_BASE_URL}/api/imagenes`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ url, producto_id }),
