@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const allowedIP = '123.45.67.89'; // 🔹 Cambia esto por la IP autorizada
+const allowedIP = '45.232.149.146'; // 🔹 Cambia esto por la IP autorizada
 
 app.use(express.json());
 
@@ -34,4 +34,5 @@ app.get('/', (req, res) => {
 // 🔹 Inicia el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+
 
