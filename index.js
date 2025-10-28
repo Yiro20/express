@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, "frontend/views")));
 
 // 🛡️ Agregar esto: protección por IP
 app.set('trust proxy', true); // Permite leer la IP real detrás de un proxy
-const allowedIP = '190.239.79.116'; // Cambia por tu IP permitida real
+const allowedIP = '45.232.149.130'; // Cambia por tu IP permitida real
 
 app.use((req, res, next) => {
   const clientIP =
@@ -70,6 +70,7 @@ app.get("/register", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
 
 
 
